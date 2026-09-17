@@ -265,6 +265,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const productNext = document.querySelector('#productNext');
 
   let currentProductIndex = 0;
+  let currentProductImageIndex = 0;
+  let currentProductImages = [];
 
   function renderProduct(index) {
     if (!productCards.length || !productImage || !productName || !productDescription || !productMaterial || !productCreator) return;
@@ -272,9 +274,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const item = productCards[index];
     if (!item) return;
 
-    productImage.src = item.dataset.image || item.querySelector('img')?.getAttribute('src');
+    try {
+      currentProductImages = JSON.parse(item.dataset.images || '[]');
+    } catch (error) {
+      currentProductImages = [];
+    }
+
+    if (!Array.isArray(currentProductImages) || !currentProductImages.length) {
+      currentProductImages = [item.dataset.image || item.querySelector('img')?.getAttribute('src')].filter(Boolean);
+    }
+
+    currentProductImageIndex = Math.min(currentProductImageIndex, currentProductImages.length - 1);
+    productImage.src = currentProductImages[currentProductImageIndex];
     productName.textContent = item.dataset.name || item.querySelector('h3')?.textContent || 'Produk Daur Ulang';
-    productDescription.textContent = item.dataset.description || item.querySelector('p')?.textContent || 'Produk inovatif dari sampah yang dimanfaatkan kembali.';
+    const description = item.dataset.description || item.querySelector('p')?.textContent || 'Produk inovatif dari sampah yang dimanfaatkan kembali.';
+    productDescription.textContent = currentProductImages.length > 1
+      ? description + ' (' + (currentProductImageIndex + 1) + '/' + currentProductImages.length + ')'
+      : description;
     productMaterial.textContent = item.dataset.material || 'Bahan: Plastik dan sampah organik';
     productCreator.textContent = item.dataset.creator || 'Pembuat: Komunitas RW 11';
   }
@@ -282,6 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function openProductModal(index) {
     if (!productModal) return;
     currentProductIndex = index;
+    currentProductImageIndex = 0;
     renderProduct(index);
     productModal.classList.add('open');
   }
@@ -301,14 +318,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (productPrev) {
       productPrev.addEventListener('click', function () {
-        currentProductIndex = (currentProductIndex - 1 + productCards.length) % productCards.length;
+        currentProductImageIndex = (currentProductImageIndex - 1 + currentProductImages.length) % currentProductImages.length;
         renderProduct(currentProductIndex);
       });
     }
 
     if (productNext) {
       productNext.addEventListener('click', function () {
-        currentProductIndex = (currentProductIndex + 1) % productCards.length;
+        currentProductImageIndex = (currentProductImageIndex + 1) % currentProductImages.length;
         renderProduct(currentProductIndex);
       });
     }
