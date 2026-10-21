@@ -1011,6 +1011,20 @@ textarea {
   transition: transform 0.5s ease;
 }
 
+.gallery-placeholder {
+  height: 260px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  background: #f1f5f2;
+  color: #68766c;
+}
+
+.gallery-placeholder i {
+  font-size: 2rem;
+}
+
 .gallery-card:hover img {
   transform: scale(1.05);
 }
