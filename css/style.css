@@ -1819,6 +1819,58 @@ textarea:focus-visible {
   }
 }
 
+.aspiration-card {
+  margin-top: 32px;
+  padding: clamp(24px, 4vw, 40px);
+}
+
+.aspiration-card .section-title {
+  margin-bottom: 10px;
+}
+
+.aspiration-description {
+  max-width: 760px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.aspiration-form {
+  display: grid;
+  gap: 10px;
+  max-width: 720px;
+}
+
+.aspiration-form label {
+  margin-top: 8px;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.aspiration-form label span {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.aspiration-form input,
+.aspiration-form select,
+.aspiration-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+.aspiration-form textarea {
+  resize: vertical;
+}
+
+.aspiration-form button {
+  justify-self: start;
+  margin-top: 12px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

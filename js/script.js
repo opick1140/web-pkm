@@ -363,6 +363,33 @@ document.addEventListener('DOMContentLoaded', function () {
   const featuredNext = document.querySelector('#featuredNext');
   let slideIndex = 0;
 
+  const aspirationForm = document.querySelector('#aspirationForm');
+  if (aspirationForm) {
+    aspirationForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(aspirationForm);
+      const name = String(formData.get('name') || '').trim();
+      const category = String(formData.get('category') || '').trim();
+      const message = String(formData.get('message') || '').trim();
+      const messageField = aspirationForm.querySelector('#aspirationMessage');
+      messageField.setCustomValidity(message ? '' : 'Mohon isi pesan sebelum melanjutkan.');
+      if (!message) {
+        messageField.reportValidity();
+        return;
+      }
+
+      const text = [
+        'Aspirasi/Laporan Warga RW 11 Derwati',
+        'Jenis: ' + category,
+        name ? 'Nama: ' + name : '',
+        'Pesan: ' + message
+      ].filter(Boolean).join('\n');
+
+      window.location.href = 'https://wa.me/6289651131135?text=' + encodeURIComponent(text);
+    });
+  }
+
   function showFeaturedSlide(index) {
     if (!featuredSlides.length) return;
     slideIndex = (index + featuredSlides.length) % featuredSlides.length;
